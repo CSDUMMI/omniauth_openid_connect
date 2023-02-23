@@ -149,6 +149,8 @@ module OmniAuth
       end
 
       def other_phase
+        print(logout_path_pattern.match?(current_path))
+        print(current_path)
         if logout_path_pattern.match?(current_path)
           options.issuer = issuer if options.issuer.to_s.empty?
           discover!
@@ -424,7 +426,8 @@ module OmniAuth
         return unless options.post_logout_redirect_uri
 
         URI.encode_www_form(
-          post_logout_redirect_uri: options.post_logout_redirect_uri
+          post_logout_redirect_uri: options.post_logout_redirect_uri,
+          id_token_hint: access_token.id_token
         )
       end
 
