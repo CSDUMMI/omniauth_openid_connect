@@ -149,8 +149,7 @@ module OmniAuth
       end
 
       def other_phase
-        print(logout_path_pattern.match?(current_path))
-        print(current_path)
+        log :debug, "Other phase initiated."
         if logout_path_pattern.match?(current_path)
           options.issuer = issuer if options.issuer.to_s.empty?
           discover!
