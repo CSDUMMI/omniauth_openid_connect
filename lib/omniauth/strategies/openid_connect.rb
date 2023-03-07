@@ -112,7 +112,6 @@ module OmniAuth
       end
 
       def request_phase
-        print("Request path: " + request_path + "\n" + logout_path_pattern.match?(current_path).to_s)
         options.issuer = issuer if options.issuer.to_s.empty?
         discover!
         redirect authorize_uri
@@ -424,12 +423,12 @@ module OmniAuth
       def encoded_post_logout_redirect_uri
         return unless options.post_logout_redirect_uri
 
-        id_token_hint = @access_token.id_token if @access_token
+        uri = {
+            :post_logout_redirect_uri => options.post_logout_redirect_uri,
+            :id_token_hint => access_token.id_token
+        }
 
-        URI.encode_www_form(
-          post_logout_redirect_uri: options.post_logout_redirect_uri,
-          id_token_hint: id_token_hint
-        )
+        URI.encode_www_form(uri)
       end
 
       def end_session_endpoint_is_valid?
